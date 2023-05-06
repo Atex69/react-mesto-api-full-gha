@@ -19,7 +19,6 @@ function Card(props) {
     }
 
     function handleDeleteClick() {
-        console.log("dsdsd")
         props.onCardDelete(props.card);
     }
 

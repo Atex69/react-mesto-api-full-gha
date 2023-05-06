@@ -11,6 +11,13 @@ class Api {
             return Promise.reject(`${res.status} ${res.statusText}`);
         }
     }
+    _getHeaders() {
+        const jwt = localStorage.getItem('jwt');
+        return {
+            'Authorization': `Bearer ${jwt}`,
+            ...this._headers,
+        };
+    }
 
     getUserData() {
         const requestUrl = this._url + '/users/me';
@@ -33,10 +40,11 @@ class Api {
             body: JSON.stringify({
                 name: data.name,
                 about: data.about
-            })
-        }).then(this._handleResponse)
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-
     addNewCard(data) {
         const requestUrl = this._url + '/cards';
         return fetch(requestUrl, {
@@ -45,32 +53,39 @@ class Api {
             body: JSON.stringify({
                 name: data.name,
                 link: data.link
-            })
-        }).then(this._handleResponse);
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-
     deleteCard(data) {
         const requestUrl = this._url + `/cards/${data._id}`;
         return fetch(requestUrl, {
             method: 'DELETE',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     addLike(cardId) {
         const requestUrl = this._url + `/cards/likes/${cardId}`;
         return fetch(requestUrl, {
             method: 'PUT',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     deleteLike(cardId) {
         const requestUrl = this._url + `/cards/likes/${cardId}`;
         return fetch(requestUrl, {
             method: 'DELETE',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     sendAvatar(data) {
@@ -80,11 +95,12 @@ class Api {
             headers: this._headers,
             body: JSON.stringify({
                 avatar: data.avatar_link
-            })
-        }).then(this._handleResponse);
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-    }
-
+}
 const api = new Api({
     url: "https://nomoreparties.co/v1/cohort-57/",
     headers: {

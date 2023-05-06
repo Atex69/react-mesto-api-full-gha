@@ -7,6 +7,7 @@ import Main from './Main';
 import Footer from './Footer';
 import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup";
+import DeleteCardPopup from "./DeleteCardPopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import ImagePopup from "./ImagePopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -22,6 +23,7 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+    const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [currentUser, setCurrentUser] = useState({});
@@ -46,9 +48,11 @@ function App() {
             setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
         }).finally(handleInfoTooltip);
     }
+
     function handleInfoTooltip() {
         setInfoTooltip(true);
     }
+
     function onLogin(email, password) {
         auth.loginUser(email, password).then((res) => {
             localStorage.setItem("jwt", res.token);
@@ -56,8 +60,9 @@ function App() {
             setEmailName(email);
             navigate("/");
         }).catch(() => {
+            closeAllPopups();
             setPopupImage(reject);
-            setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
+            setPopupTitle("Неправильная почта или пароль.");
             handleInfoTooltip();
         });
     }
@@ -65,16 +70,19 @@ function App() {
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
         if (jwt) {
-            auth.getToken(jwt).then((res) => {
-                if (res) {
-                    setIsLoggedIn(true);
-                    setEmailName(res.data.email);
-                }
-            }).catch((err) => {
-                console.error(err);
-            });
+            auth.getToken(jwt)
+                .then((res) => {
+                    if (res) {
+                        setIsLoggedIn(true);
+                        setEmailName(res.data.email);
+                    }
+                })
+                .catch((err) => {
+                    console.log(`Не удалось получить токен: ${err}`);
+                })
         }
     }, []);
+
 
     useEffect(() => {
         if (isLoggedIn === true) {
@@ -84,37 +92,52 @@ function App() {
 
     useEffect(() => {
         if (isLoggedIn === true) {
-        Promise.all([api.getUserData(), api.getInitialCards()]).then(([user, cards]) => {
-            setCurrentUser(user);
-            setCards(cards);
-        }).catch((err) => {
-            console.error(err);
-        })}
+            Promise.all([api.getUserData(), api.getInitialCards()])
+                .then(([user, cards]) => {
+                    setCurrentUser(user.user);
+                    setCards(cards.reverse());
+                })
+                .catch(() => {
+                    closeAllPopups();
+                    setPopupImage(reject);
+                    setPopupTitle("Что-то пошло не так! Ошибка авторизации.");
+                    handleInfoTooltip();
+                });
+        }
     }, [isLoggedIn]);
 
     function handleUpdateUser(data) {
         api.setUserInfo(data).then((newUser) => {
             setCurrentUser(newUser);
             closeAllPopups();
-        }).catch((err) => {
-            console.error(err);
+        }).catch(() => {
+            setPopupImage(reject);
+            setPopupTitle("Что-то пошло не так! Не удалось обновить профиль.");
+            handleInfoTooltip();
         });
     }
 
+
     function handleCardLike(card) {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
+        const isLiked = card.likes.some((i) => i === currentUser._id);
 
         if (!isLiked) {
             api.addLike(card._id).then((newCard) => {
                 setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-            }).catch((err) => {
-                console.error(err);
+            }).catch(() => {
+                closeAllPopups();
+                setPopupImage(reject);
+                setPopupTitle("Что-то пошло не так! Не удалось поставить лайк.");
+                handleInfoTooltip();
             });
         } else {
             api.deleteLike(card._id).then((newCard) => {
                 setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-            }).catch((err) => {
-                console.error(err);
+            }).catch(() => {
+                closeAllPopups();
+                setPopupImage(reject);
+                setPopupTitle("Что-то пошло не так! Не удалось снять лайк.");
+                handleInfoTooltip();
             });
         }
     }
@@ -123,16 +146,23 @@ function App() {
         api.addNewCard(data).then((newCard) => {
             setCards([newCard, ...cards]);
             closeAllPopups();
-        }).catch((err) => {
-            console.error(err);
+        }).catch(() => {
+            closeAllPopups();
+            setPopupImage(reject);
+            setPopupTitle("Что-то пошло не так! Не удалось создать карточку.");
+            handleInfoTooltip();
         });
     }
 
     function handleCardDelete(card) {
         api.deleteCard(card).then(() => {
-            setCards((items) => items.filter((c) => c._id !== card._id && c));
-        }).catch((err) => {
-            console.error(err);
+            setCards((items) => items.filter((c) => c !== card && c));
+            closeAllPopups();
+        }).catch(() => {
+            closeAllPopups();
+            setPopupImage(reject);
+            setPopupTitle("Что-то пошло не так! Не удалось удалить карточку.");
+            handleInfoTooltip();
         });
     }
 
@@ -140,8 +170,11 @@ function App() {
         api.sendAvatar(data).then((newAvatar) => {
             setCurrentUser(newAvatar);
             closeAllPopups();
-        }).catch((err) => {
-            console.error(err);
+        }).catch(() => {
+            closeAllPopups();
+            setPopupImage(reject);
+            setPopupTitle("Что-то пошло не так! Не удалось обновить аватар.");
+            handleInfoTooltip();
         });
     }
 
@@ -160,6 +193,11 @@ function App() {
     function handleCardClick(card) {
         setSelectedCard(card);
         setIsImagePopupOpen(true);
+    }
+
+    function handleCardDelete(card) {
+        setSelectedCard(card);
+        setIsDeletePopupOpen(true);
     }
 
     function handlePopupCloseClick(evt) {
@@ -251,6 +289,14 @@ function App() {
                         onCloseClick={handlePopupCloseClick}
                         onClose={closeAllPopups}
                         onSubmit={handleAddPlaceSubmit}
+                    />
+
+                    <DeleteCardPopup
+                        isOpen={isDeletePopupOpen}
+                        onCloseClick={handlePopupCloseClick}
+                        onClose={closeAllPopups}
+                        onSubmit={handleCardDelete}
+                        card={selectedCard}
                     />
 
                     <EditAvatarPopup
