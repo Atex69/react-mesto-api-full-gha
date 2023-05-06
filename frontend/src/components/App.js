@@ -49,9 +49,6 @@ function App() {
         }).finally(handleInfoTooltip);
     }
 
-    function handleInfoTooltip() {
-        setInfoTooltip(true);
-    }
 
     function onLogin(email, password) {
         auth.loginUser(email, password).then((res) => {
@@ -194,11 +191,15 @@ function App() {
         setSelectedCard(card);
         setIsImagePopupOpen(true);
     }
+    function handleInfoTooltip() {
+        setInfoTooltip(true);
+    }
 
-    function handleCardDelete(card) {
+    function handleDeleteCardClick(card) {
         setSelectedCard(card);
         setIsDeletePopupOpen(true);
     }
+
 
     function handlePopupCloseClick(evt) {
         if (evt.target.classList.contains('popup')) {
@@ -267,7 +268,7 @@ function App() {
                                     onCardClick={handleCardClick}
                                     cards={cards}
                                     onCardLike={handleCardLike}
-                                    onCardDelete={handleCardDelete}
+                                    onCardDelete={handleDeleteCardClick}
                                 />
                                 <Footer />
                             </>

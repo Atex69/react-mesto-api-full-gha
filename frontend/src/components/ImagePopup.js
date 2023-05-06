@@ -1,3 +1,5 @@
+import React from 'react';
+
 function ImagePopup(props) {
     return (
         <div className={`popup popup_type_image" ${props.isOpen ? 'popup_opened-pic' : ''}`} onClick={props.onCloseClick}>

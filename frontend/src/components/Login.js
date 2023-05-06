@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from 'react';
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -16,7 +17,6 @@ function Login(props) {
     evt.preventDefault();
     props.onLogin(email, password);
   }
-
   return (
       <section className="login">
         <h2 className="login__title">Вход</h2>
