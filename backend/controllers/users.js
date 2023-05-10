@@ -97,13 +97,7 @@ const getCurrentUser = (req, res, next) => {
     })
     .then((user) => res.status(200).send({ user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequest('Некорректные данные'));
-      } else if (err.message === 'NotFound') {
-        next(new NotFound('Пользователь не найден'));
-      } else {
         next(err);
-      }
     });
 };
 
