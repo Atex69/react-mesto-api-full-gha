@@ -1,0 +1,12 @@
+.main-body {
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+  font-family: "Inter", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}

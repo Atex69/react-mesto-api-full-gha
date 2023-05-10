@@ -1,0 +1,17 @@
+.element {
+  max-width: 282px;
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: min-content 1fr;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 10px;
+  list-style-type: none;
+  position: relative;
+}
+
+@media screen and (max-width: 768px) {
+  .element {
+    width: 100%;
+  }
+}
