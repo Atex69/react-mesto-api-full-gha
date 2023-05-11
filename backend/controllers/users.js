@@ -58,7 +58,7 @@ const updateProfile = (req, res, next) => {
   })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Некорректные данные при обновлении профиля'));
       } else {
         next(err);
@@ -78,7 +78,7 @@ const updateAvatar = (req, res, next) => {
   })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные при обновлении аватара'));
       } else {
         next(err);
@@ -93,7 +93,7 @@ const getCurrentUser = (req, res, next) => {
     })
     .then((user) => res.status(200).send({ user }))
     .catch((err) => {
-        next(err);
+      next(err);
     });
 };
 
@@ -107,7 +107,6 @@ const login = (req, res, next) => {
     })
     .catch(next);
 };
-
 
 module.exports = {
   getUsers,

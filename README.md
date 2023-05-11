@@ -1,15 +1,35 @@
 [![Tests](https://github.com/yandex-praktikum/react-mesto-api-full-gha/actions/workflows/tests.yml/badge.svg)](https://github.com/yandex-praktikum/react-mesto-api-full-gha/actions/workflows/tests.yml)
 # react-mesto-api-full
-Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`. 
-  
-Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
+# Фронтенд и Бэкенд проекта Место 
 
-Адрес репозитория: https://github.com/...
+## Описание проекта
+Репозиторий для приложения проекта Mesto
 
-## Ссылки на проект
+## Функционал:
+- Редактирование аватара и профиля;
+- Добавление фотографии и лайков;
+- Удаление фотографии и лайков;
+- Открытие фотографии в полном размере;
+- Авторизация и регистрация пользователей.
 
-IP-адрес x.x.x.x
+## Стек технологий:
+### Frontend:
+- HTML5;
+- CSS3(FLexbox,Grid,Media Queries)
+- БЭМ;
+- Фйловая структура Nested БЭМ;
+- JavaScript:
+- Npm;
+- React JS:
 
-Frontend https://...
+### Backend:
+- Node.js;
+- Express;
+- MongoDB;
+- Сelebrate;
+- Winston.
 
-Backend https://...
+
+## Ссылки:
+- Frontend: https://memorysnap.nomoredomains.monster/
+- Backend: https://api.memorysnap.nomoredomains.monster/

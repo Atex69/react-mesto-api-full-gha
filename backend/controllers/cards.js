@@ -33,10 +33,11 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Cards.deleteOne(cardId).then(() => res.status(200).send(card));
-      } else {
-        return  (new ForbiddenError('Доступ запрещен'));
+        return Cards.deleteOne(cardId)
+          .then(() => res.status(200).send(card))
+          .catch(next);
       }
+      throw new ForbiddenError('Доступ запрещен');
     })
     .catch(next);
 };

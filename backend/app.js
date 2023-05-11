@@ -29,7 +29,7 @@ app.get('/crash-test', () => {
 });
 
 app.use(requestLogger);
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/mestodb', () => {
   console.log('Connection successful');
 });
 app.post('/sign-in', validationLogin, login);
