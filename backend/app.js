@@ -30,7 +30,7 @@ app.get('/crash-test', () => {
 
 app.use(requestLogger);
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
-  useNewUrlParser: true,
+  console.log('Connection successful');
 });
 app.post('/sign-in', validationLogin, login);
 app.post('/sign-up', validationCreateUser, createUser);
