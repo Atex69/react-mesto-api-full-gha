@@ -1,12 +1,33 @@
-# Проект: Mesto-react-auth
-#####    https://atex69.github.io/mesto-react-auth - ссылка для просмотра
-# Описание
-#####    Страница для размещения фотографий пользователей
- #####    Есть возможность редактирования профиля, валидация данных формы, постановки лайка
- #### Авторизация и регистрация пользователей.
+# Фронтенд и Бэкенд проекта Место 
 
-# Технологии
-##### react,js,html,flex,grid,css
-# Как посмотреть
-#####     Заходим на профиль гитхаб  https://github.com/Atex69/mesto-react-auth, нажимаем на кнопку "code" и далее "Download zip"
+## Описание проекта
+Репозиторий для приложения проекта Mesto
 
+## Функционал:
+- Редактирование аватара и профиля;
+- Добавление фотографии и лайков;
+- Удаление фотографии и лайков;
+- Открытие фотографии в полном размере;
+- Авторизация и регистрация пользователей.
+
+## Стек технологий:
+### Frontend:
+- HTML5;
+- CSS3(FLexbox,Grid,Media Queries)
+- БЭМ;
+- Фйловая структура Nested БЭМ;
+- JavaScript:
+- Npm;
+- React JS:
+
+### Backend:
+- Node.js;
+- Express;
+- MongoDB;
+- Сelebrate;
+- Winston.
+
+
+## Ссылки:
+- Frontend: https://memorysnap.nomoredomains.monster/
+- Backend: https://api.memorysnap.nomoredomains.monster/
