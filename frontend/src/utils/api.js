@@ -1,9 +1,9 @@
 import {BASE_URL} from "./auth";
 
 class Api {
-    constructor({url, headers}) {
-        this._url = url;
-        this._headers = headers;
+    constructor(options) {
+        this._url = options.url;
+        this._headers = options.headers;
     }
 
     _handleResponse(res) {
@@ -13,83 +13,93 @@ class Api {
             return Promise.reject(`${res.status} ${res.statusText}`);
         }
     }
+    _getHeaders() {
+        const jwt = localStorage.getItem('jwt');
+        return {
+            'Authorization': `Bearer ${jwt}`,
+            ...this._headers,
+        };
+    }
 
-    getUserData() {
-        const requestUrl = this._url + '/users/me';
-        return fetch(requestUrl, {
-            headers: this._headers,
-        }).then(this._handleResponse);
+    getUserData()  {
+        return fetch(`${this._url}/users/me`, {
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     getInitialCards() {
-        const requestUrl = this._url + '/cards';
-        return fetch(requestUrl, {
-            headers: this._headers,
-        }).then(this._handleResponse);
+        return fetch(`${this._url}/cards`, {
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-
-    setUserInfo(data) {
+    setUserInfo(data){
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
-            headers: this._headers,
+            headers: this._getHeaders(),
             body: JSON.stringify({
                 name: data.name,
-                about: data.about
-            })
-        }).then(this._handleResponse)
+                about: data.about,
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-
     addNewCard(data) {
-        const requestUrl = this._url + '/cards';
-        return fetch(requestUrl, {
+        return fetch(`${this._url}/cards`, {
             method: 'POST',
-            headers: this._headers,
+            headers: this._getHeaders(),
             body: JSON.stringify({
                 name: data.name,
-                link: data.link
-            })
-        }).then(this._handleResponse);
+                link: data.link,
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     deleteCard(data) {
-        const requestUrl = this._url + `/cards/${data._id}`;
-        return fetch(requestUrl, {
+        return fetch(`${this._url}/cards/${data._id}`, {
             method: 'DELETE',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
-
-    addLike(cardId) {
-        const requestUrl = this._url + `/cards/${cardId}/likes`;
-        return fetch(requestUrl, {
+    addLike(id) {
+        return fetch(`${this._url}/cards/${id}/likes`, {
             method: 'PUT',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
-    deleteLike(cardId) {
-        const requestUrl = this._url + `/cards/${cardId}/likes`;
-        return fetch(requestUrl, {
+    deleteLike(id) {
+        return fetch(`${this._url}/cards/${id}/likes`, {
             method: 'DELETE',
-            headers: this._headers,
-        }).then(this._handleResponse);
+            headers: this._getHeaders(),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 
     sendAvatar(data) {
-        const requestUrl = this._url + `/users/me/avatar`;
-        return fetch(requestUrl, {
+        return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
-            headers: this._headers,
+            headers: this._getHeaders(),
             body: JSON.stringify({
-                avatar: data.avatar_link
-            })
-        }).then(this._handleResponse);
-    }
-
-    setToken() {
-        this._headers.authorization = `Bearer ${localStorage.getItem('jwt')}`;
+                avatar: data.avatar_link,
+            }),
+        }).then((res) => {
+            return this._handleResponse(res);
+        });
     }
 }
+
 
 const api = new Api({
     url: "https://api.memorysnap.nomoredomains.monster",
