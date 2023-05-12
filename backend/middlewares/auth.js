@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    return (new AuthError('Необходима авторизация'));
+    return next(new AuthError('Необходима авторизация'));
   }
 
   const token = authorization.replace('Bearer ', '');
@@ -17,7 +17,7 @@ module.exports = (req, res, next) => {
     payload = jwt.verify(token, `${NODE_ENV === 'production' ? JWT_SECRET : 'yandex-praktikum'}`);
     req.user = payload;
   } catch (err) {
-    return (new AuthError('Необходима авторизация'));
+    return next(new AuthError('Необходима авторизация'));
   }
 
   return next();
