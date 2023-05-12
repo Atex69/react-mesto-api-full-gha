@@ -10,7 +10,7 @@
 @import url(./blocks/element/__like/_active/element__like_active.css);
 @import url(./blocks/element/__title/element__title.css);
 @import url(./blocks/element/__delete-card/element__delete-card.css);
-@import url(./blocks/element/__delete-card/_visible/element__delete-card_visible.css);
+@import url(blocks/element/__delete-card/_invisible/element__delete-card_invisible.css);
 @import url(./blocks/elements/elements.css);
 @import url(./blocks/elements/__container/elements__container.css);
 @import url(./blocks/footer/footer.css);
