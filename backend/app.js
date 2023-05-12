@@ -29,9 +29,16 @@ app.get('/crash-test', () => {
 });
 
 app.use(requestLogger);
-mongoose.connect('mongodb://localhost:27017/mestodb', () => {
-  console.log('Connection successful');
-});
+
+try {
+  mongoose.set('strictQuery', false)
+  mongoose.connect('mongodb://localhost:27017/mestodb')
+  console.log('Mongo connected')
+}
+catch(error) {
+  console.log(error)
+  process.exit()
+}
 app.post('/sign-in', validationLogin, login);
 app.post('/sign-up', validationCreateUser, createUser);
 
