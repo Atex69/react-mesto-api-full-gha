@@ -1,4 +1,3 @@
-import {BASE_URL} from "./auth";
 
 class Api {
     constructor(options) {
@@ -62,7 +61,7 @@ class Api {
     }
 
     deleteCard(data) {
-        return fetch(`${this._url}/cards/${data._id}`, {
+        return fetch(`${this._url}/cards/${data.cardId}`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         }).then((res) => {
