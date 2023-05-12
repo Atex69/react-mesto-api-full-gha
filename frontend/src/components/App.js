@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import api from "../utils/api";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {Routes, Route, Navigate, useNavigate} from "react-router-dom";
 import * as auth from "../utils/auth";
 import Header from './Header';
 import Main from './Main';
@@ -9,7 +9,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import AddPlacePopup from "./AddPlacePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import ImagePopup from "./ImagePopup";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import {CurrentUserContext} from "../contexts/CurrentUserContext";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
@@ -33,9 +33,6 @@ function App() {
     const [infoTooltip, setInfoTooltip] = useState(false);
 
 
-
-
-
     function onRegister(email, password) {
         auth.registerUser(email, password).then(() => {
             setPopupImage(resolve);
@@ -46,9 +43,11 @@ function App() {
             setPopupTitle("Что-то пошло не так! Попробуйте ещё раз.");
         }).finally(handleInfoTooltip);
     }
+
     function handleInfoTooltip() {
         setInfoTooltip(true);
     }
+
     function onLogin(email, password) {
         auth.loginUser(email, password).then((res) => {
             localStorage.setItem("jwt", res.token);
@@ -65,12 +64,14 @@ function App() {
     useEffect(() => {
         const jwt = localStorage.getItem("jwt");
         if (jwt) {
-            auth.getToken(jwt).then((res) => {
-                if (res) {
-                    setIsLoggedIn(true);
-                    setEmailName(res.data.email);
-                }
-            }).catch((err) => {
+            auth
+                .getToken(jwt)
+                .then((res) => {
+                    if (res) {
+                        setIsLoggedIn(true);
+                        setEmailName(res.data.email);
+                    }
+                }).catch((err) => {
                 console.error(err);
             });
         }
@@ -84,12 +85,14 @@ function App() {
 
     useEffect(() => {
         if (isLoggedIn === true) {
-        Promise.all([api.getUserData(), api.getInitialCards()]).then(([user, cards]) => {
-            setCurrentUser(user);
-            setCards(cards);
-        }).catch((err) => {
-            console.error(err);
-        })}
+            api.setToken();
+            Promise.all([api.getUserData(), api.getInitialCards()]).then(([user, cards]) => {
+                setCurrentUser(user);
+                setCards(cards);
+            }).catch((err) => {
+                console.error(err);
+            })
+        }
     }, [isLoggedIn]);
 
     function handleUpdateUser(data) {
@@ -191,6 +194,7 @@ function App() {
             }
         }
     }, [isEditAvatarPopupOpen, isEditProfilePopupOpen, isAddPlacePopupOpen, selectedCard, infoTooltip]);
+
     function onSignOut() {
         setIsLoggedIn(false);
         setEmailName(null);
@@ -206,20 +210,20 @@ function App() {
                         <Route path="/sign-in" element={
                             <>
                                 <Header title="Регистрация" route="/sign-up"/>
-                                <Login onLogin={onLogin} />
+                                <Login onLogin={onLogin}/>
                             </>
                         }/>
 
                         <Route path="/sign-up" element={
                             <>
                                 <Header title="Войти" route="/sign-in"/>
-                                <Register onRegister={onRegister} />
+                                <Register onRegister={onRegister}/>
                             </>
                         }/>
 
                         <Route exact path="/" element={
                             <>
-                                <Header title="Выйти" mail={emailName} onClick={onSignOut} route="" />
+                                <Header title="Выйти" mail={emailName} onClick={onSignOut} route=""/>
                                 <ProtectedRoute
                                     component={Main}
                                     isLogged={isLoggedIn}
@@ -231,11 +235,11 @@ function App() {
                                     onCardLike={handleCardLike}
                                     onCardDelete={handleCardDelete}
                                 />
-                                <Footer />
+                                <Footer/>
                             </>
                         }/>
 
-                        <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"}/>} />
+                        <Route path="*" element={<Navigate to={isLoggedIn ? "/" : "/sign-in"}/>}/>
                     </Routes>
 
 
@@ -243,7 +247,7 @@ function App() {
                         isOpen={isEditProfilePopupOpen}
                         onCloseClick={handlePopupCloseClick}
                         onClose={closeAllPopups}
-                        onUpdateUser ={handleUpdateUser}
+                        onUpdateUser={handleUpdateUser}
                     />
 
                     <AddPlacePopup

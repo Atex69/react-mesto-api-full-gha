@@ -85,7 +85,11 @@ class Api {
             })
         }).then(this._handleResponse);
     }
+
+    setToken() {
+        this._headers.authorization = `Bearer ${localStorage.getItem('jwt')}`;
     }
+}
 
 const api = new Api({
     url: "https://api.memorysnap.nomoredomains.monster",
