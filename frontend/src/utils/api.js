@@ -60,8 +60,8 @@ class Api {
         });
     }
 
-    deleteCard(cardId) {
-        return fetch(`${this._url}/cards/${cardId}`, {
+    deleteCard(data) {
+        return fetch(`${this._url}/cards/${data._id}`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         }).then((res) => {
