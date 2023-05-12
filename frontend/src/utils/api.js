@@ -60,16 +60,16 @@ class Api {
         });
     }
 
-    deleteCard(cardId) {
-        return fetch(`${this._url}/cards/${cardId}`, {
+    deleteCard(data) {
+        return fetch(`${this._url}/cards/${data._id}`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         }).then((res) => {
             return this._handleResponse(res);
         });
     }
-    addLike(cardId) {
-        return fetch(`${this._url}/cards/${cardId}/likes`, {
+    addLike(id) {
+        return fetch(`${this._url}/cards/${id}/likes`, {
             method: 'PUT',
             headers: this._getHeaders(),
         }).then((res) => {
@@ -77,8 +77,8 @@ class Api {
         });
     }
 
-    deleteLike(cardId) {
-        return fetch(`${this._url}/cards/${cardId}/likes`, {
+    deleteLike(id) {
+        return fetch(`${this._url}/cards/${id}/likes`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         }).then((res) => {
