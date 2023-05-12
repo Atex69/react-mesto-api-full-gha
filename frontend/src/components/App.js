@@ -32,6 +32,29 @@ function App() {
     const [popupTitle, setPopupTitle] = useState("");
     const [infoTooltip, setInfoTooltip] = useState(false);
 
+    useEffect(() => {
+        const jwt = localStorage.getItem("jwt");
+        if (jwt) {
+            auth.getToken(jwt)
+                .then((res) => {
+                    if (res) {
+                        setIsLoggedIn(true);
+                        setEmailName(res.user.email);
+                    }
+                })
+                .catch((err) => {
+                    console.log(`Не удалось получить токен: ${err}`);
+                })
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isLoggedIn === true) {
+            navigate("/");
+        }
+    }, [isLoggedIn, navigate]);
+
+
 
     function onRegister(email, password) {
         auth.registerUser(email, password).then(() => {
@@ -64,33 +87,10 @@ function App() {
     }
 
     useEffect(() => {
-        const jwt = localStorage.getItem("jwt");
-        if (jwt) {
-            auth
-                .getToken(jwt)
-                .then((res) => {
-                    if (res) {
-                        setIsLoggedIn(true);
-                        setEmailName(res.data.email);
-                    }
-                })
-                .catch((err) => {
-                console.log(`Не удалось получить токен: ${err}`);
-            })
-        }
-    }, []);
-
-    useEffect(() => {
-        if (isLoggedIn === true) {
-            navigate("/");
-        }
-    }, [isLoggedIn, navigate]);
-
-    useEffect(() => {
         if (isLoggedIn === true) {
             Promise.all([api.getUserData(), api.getInitialCards()]).then(([user, cards]) => {
                 setCurrentUser(user.user);
-                setCards(cards);
+                setCards(cards.reverse());
             }).catch(() => {
                 closeAllPopups();
                 setPopupImage(reject);
