@@ -90,7 +90,6 @@ class Api {
 const api = new Api({
     url: "https://api.memorysnap.nomoredomains.monster",
     headers: {
-        authorization: localStorage.getItem("jwt"),
         "Content-Type": "application/json",
     },
 })
