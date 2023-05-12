@@ -90,8 +90,8 @@ function App() {
         if (isLoggedIn === true) {
             Promise.all([api.getUserData(), api.getInitialCards()]).then(([user, cards]) => {
                 setCurrentUser(user.user);
-                setCards(cards.reverse);
-            }).catch((err) => {
+                setCards(cards);
+            }).catch(() => {
                 closeAllPopups();
                 setPopupImage(reject);
                 setPopupTitle("Что-то пошло не так! Ошибка авторизации.");
@@ -104,7 +104,7 @@ function App() {
         api.setUserInfo(data).then((newUser) => {
             setCurrentUser(newUser);
             closeAllPopups();
-        }).catch((err) => {
+        }).catch(() => {
             setPopupImage(reject);
             setPopupTitle("Что-то пошло не так! Не удалось обновить профиль.");
             handleInfoTooltip();
