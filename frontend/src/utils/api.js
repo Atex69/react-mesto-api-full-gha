@@ -1,3 +1,5 @@
+import {BASE_URL} from "./auth";
+
 class Api {
     constructor({url, headers}) {
         this._url = url;
@@ -86,9 +88,9 @@ class Api {
     }
 
 const api = new Api({
-    url: "https://nomoreparties.co/v1/cohort-57/",
+    url: BASE_URL,
     headers: {
-        authorization: "ad54961e-3f85-45c8-ba7a-70af841df2af",
+        authorization: localStorage.getItem("jwt"),
         "Content-Type": "application/json",
     },
 })
