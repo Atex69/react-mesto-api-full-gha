@@ -69,8 +69,8 @@ class Api {
             return this._handleResponse(res);
         });
     }
-    addLike(id) {
-        return fetch(`${this._url}/cards/likes/${id}`, {
+    addLike(cardId) {
+        return fetch(`${this._url}/cards/${cardId}/likes`, {
             method: 'PUT',
             headers: this._getHeaders(),
         }).then((res) => {
@@ -78,8 +78,8 @@ class Api {
         });
     }
 
-    deleteLike(id) {
-        return fetch(`${this._url}/cards/likes/${id}`, {
+    deleteLike(cardId) {
+        return fetch(`${this._url}/cards/${cardId}/likes`, {
             method: 'DELETE',
             headers: this._getHeaders(),
         }).then((res) => {
