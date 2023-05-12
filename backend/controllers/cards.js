@@ -33,7 +33,7 @@ const deleteCard = (req, res, next) => {
     })
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        return Cards.deleteOne(id)
+        return Cards.deleteOne(card)
           .then(() => res.status(200).send(card))
           .catch(next);
       }
